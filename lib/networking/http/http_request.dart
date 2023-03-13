@@ -2,7 +2,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import '../service/endpoint_builder.dart';
-import '../http/content_encoding.dart';
+import '../http/body_encoding.dart';
 
 class HTTPRequest extends Request {
 
@@ -14,8 +14,18 @@ class HTTPRequest extends Request {
       Uri.parse(
           service.path));
 
+
   @override
-  String get body => json.encode(service.parameters);
+  String get body {
+    switch (service.bodyEncoding) {
+      case BodyEncoding.json:
+        return json.encode(service.parameters);
+      case BodyEncoding.body:
+        return service.parameters.toString();
+      default:
+        return "";
+    }
+  }
 
   @override
   Map<String, String> get headers {
@@ -29,7 +39,7 @@ class HTTPRequest extends Request {
     if (service.parameters == null) {
       return Uint8List(0);
     }
-    if (service.contentEncoding == ContentEncoding.body) {
+    if (service.bodyEncoding == BodyEncoding.body) {
       final queryParameters = Uri(queryParameters: service.parameters);
       List<int> bodyBytes = utf8.encode(queryParameters.query);
       return Uint8List.fromList(bodyBytes);
@@ -41,7 +51,7 @@ class HTTPRequest extends Request {
 
   @override
   Uri get url {
-    if (service.contentEncoding == ContentEncoding.url) {
+    if (service.bodyEncoding == BodyEncoding.url) {
       return Uri.parse('${service.path}${service.queryParameters}');
     }
     return Uri.parse(service.path);

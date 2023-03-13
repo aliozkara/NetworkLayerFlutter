@@ -1,4 +1,4 @@
-import '../http/content_encoding.dart';
+import '../http/body_encoding.dart';
 import '../http/content_type.dart';
 import '../http/http_method.dart';
 import '../service/endpoint.dart';
@@ -12,7 +12,7 @@ class EndpointBuilder implements Endpoint {
   late ContentType contentType;
 
   @override
-  late ContentEncoding contentEncoding;
+  late BodyEncoding bodyEncoding;
 
   @override
   late HTTPMethod httpMethod;
@@ -32,5 +32,6 @@ class EndpointBuilder implements Endpoint {
     }
     return '';
   }
+
 
 }

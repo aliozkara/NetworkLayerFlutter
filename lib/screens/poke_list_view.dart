@@ -56,4 +56,5 @@ class PokeListView extends StatelessWidget {
       ),
     );
   }
+
 }

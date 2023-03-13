@@ -15,7 +15,9 @@ class RequestController implements RequestControllerImp {
 
   @override
   Future execute({required EndpointBuilder endpoint}) async {
-    final request = HTTPRequest(endpoint);
+
+    BaseRequest request = HTTPRequest(endpoint);
+
     try {
       final response = await _client.send(request);
       if (response.statusCode >= 200 &&
